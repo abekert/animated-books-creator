@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Алиса в стране чудес</Name>
+  <Author>Льюис Кэрролл</Author>
+  <Pages>
+    <page Number="1">
+      <Text>Первая страница</Text>
+    </page>
+    <page Number="2">
+      <Text>А это уже вторая страница</Text>
+    </page>
+  </Pages>
+</Book>
