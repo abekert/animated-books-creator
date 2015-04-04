@@ -46,9 +46,15 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\ComboBox\Scripts\ComboBox.cs" />
+     <Compile Include="Assets\ComboBox\Scripts\ComboBoxItem.cs" />
+     <Compile Include="Assets\ComboBox\Scripts\TestComboBox.cs" />
      <Compile Include="Assets\Scripts\Book.cs" />
+     <Compile Include="Assets\Scripts\BookComponent.cs" />
      <Compile Include="Assets\Scripts\BookPage.cs" />
-     <Compile Include="Assets\Scripts\ButtonsDelegate.cs" />
+     <Compile Include="Assets\Scripts\Picture.cs" />
+     <Compile Include="Assets\Scripts\UI\LeftPanelDelegate.cs" />
+     <Compile Include="Assets\Scripts\UI\TopPanelDelegate.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
