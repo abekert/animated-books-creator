@@ -9,10 +9,9 @@ public class BookPage
 {
 	public BookPage ()
 	{
-		Pictures = new List<Picture>();
 	}
 
-	public BookPage (int number, string text) : base()
+	public BookPage (int number, string text) : this()
 	{
 		this.Number = number;
 		this.Text = text;
@@ -24,12 +23,12 @@ public class BookPage
 	[XmlElement("Text")]   
 	public string Text { get; set; }
 
-	[XmlArray("Pictures"), XmlArrayItem("picture")]
-	public List<Picture> Pictures { get; set; }
-
+	[XmlArray("Pictures"), XmlArrayItem("Picture")]
+	public List<Picture> Pictures = new List<Picture>();
+	
 	public override string ToString ()
 	{
-		return string.Format ("Page number {0}. {1}", Number, Text);
+		return string.Format ("Page number {0}. {1}. Contains {2} pictures", Number, Text, Pictures.Count);
 	}
 
 	public void OrganizePicturesIntoDirectory(string directory)

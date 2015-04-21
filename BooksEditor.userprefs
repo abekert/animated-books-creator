@@ -1,13 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/UI/LeftPanelDelegate.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/UI/TopPanelDelegate.cs">
     <Files>
-      <File FileName="Assets/Scripts/BookComponent.cs" Line="42" Column="12" />
-      <File FileName="Assets/Scripts/UI/LeftPanelDelegate.cs" Line="67" Column="3" />
-      <File FileName="Assets/Scripts/Book.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Picture.cs" Line="40" Column="1" />
+      <File FileName="Assets/Scripts/UI/TopPanelDelegate.cs" Line="63" Column="1" />
       <File FileName="Assets/Scripts/BookPage.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/TopPanelDelegate.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UI/GUIManager.cs" Line="9" Column="5" />
+      <File FileName="Assets/Scripts/Book.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PicturesWindow.cs" Line="15" Column="1" />
+      <File FileName="Assets/Scripts/Picture.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/BookComponent.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Position.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/MouseDrag.cs" Line="24" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
