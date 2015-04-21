@@ -12,6 +12,7 @@ public class Book {
 		var xmlSerializer = new XmlSerializer(typeof (Book));
 		var stringReader = new StringReader(loadedText);
 		var loadedBook = (Book) xmlSerializer.Deserialize(stringReader);
+		loadedBook.WorkingDirectory = Path.GetDirectoryName(path);
 
 		return loadedBook;
 	}
@@ -28,12 +29,29 @@ public class Book {
 		File.WriteAllBytes(path, System.Text.Encoding.UTF8.GetBytes(stringWriter.ToString()));
 	}
 
+	public static Book TemplateBook() {
+		Book book = new Book();
+		book.Name = "New Book";
+		book.Author = "The Grand Author";
+
+		var page = new BookPage ();
+		page.Number = 1;
+		page.Pictures = new List<Picture> ();
+		book.Pages = new List<BookPage> ();
+		book.Pages.Add (page);
+		book.CurrentPageIndex = 0;
+
+		return book;
+	}
+
 	public Book()
 	{
-		Pages = new List<BookPage>();
-		Pages.Add(new BookPage(1, "New Page"));
-		CurrentPageIndex = 0;
+//		Pages.Add(new BookPage(1, "New Page"));
+//		CurrentPageIndex = 0;
 	}
+
+	[XmlIgnore]
+	public string WorkingDirectory = "";
 
 	[XmlElement("Name")]
 	public string Name  { get; set; }
@@ -44,10 +62,13 @@ public class Book {
 	[XmlIgnore]
 	public string Text = "";
 
-	[XmlArray("Pages"), XmlArrayItem("page")]
-	public List<BookPage> Pages { get; set; }
+	[XmlArray("Pages"), XmlArrayItem("Page")]
+	public List<BookPage> Pages = new List<BookPage> ();
 
-	public int CurrentPageIndex { get; set; }
+	[XmlIgnore]
+	public int CurrentPageIndex = 0;
+
+	[XmlIgnore]
 	public BookPage CurrentPage
 	{
 		get {
@@ -61,7 +82,11 @@ public class Book {
 	
 	public override string ToString ()
 	{
-		return string.Format ("name={0}, author={1}, text={2}, pages={3}", Name, Author, Text, Pages);
+		var pagesString = "";
+		foreach (var page in Pages) {
+			pagesString = pagesString + page.ToString() + System.Environment.NewLine;
+		}
+		return string.Format ("name={0}, author={1}, text={2}, pages count={3}. Pages content: {4}", Name, Author, Text, Pages.Count, pagesString);
 	}
 
 	private void organizePicturesOnEveryPage(string workingDirectory)
