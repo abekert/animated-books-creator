@@ -1,33 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MouseDrag : MonoBehaviour {
+using BookModel;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+public class MouseDrag : MonoBehaviour
+{	
+	internal IPositionable PositionableObject;
 
-//	public static GameObject DragObject;
-	public Picture Picture;
+	private Vector3 mouseDownPosition;
+	private Vector3 originalPosition;
+	private float distanceToScreen;
 
 	void OnMouseDown()
 	{
-		Debug.Log("On Mouse Down Was Called");
+		distanceToScreen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+		mouseDownPosition = worldMousePosition ();
+		originalPosition = transform.position;
+
+		PositionableObject.RepositionBegan ();
 	}
+
 	void OnMouseDrag()
 	{
-		Debug.Log("On Mouse Drag Was Called");
+		Vector3 mousePosition = worldMousePosition ();
+		var mouseDrag = mousePosition - mouseDownPosition;
 
-		float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-		Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen ));
-		transform.position = new Vector3( pos_move.x, pos_move.y, transform.position.z );
-		Picture.UpdatePositionByPictureObject ();
+		transform.position = new Vector3(mouseDrag.x + originalPosition.x, mouseDrag.y + originalPosition.y, transform.position.z);
+		PositionableObject.Position.convertFromOnScreenPosition (transform.position);
+	}
+
+	private Vector3 worldMousePosition()
+	{
+		return Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceToScreen));
 	}
 
 }

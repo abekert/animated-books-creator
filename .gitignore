@@ -8,7 +8,9 @@
 Temp/
 Library/
 UnityPlayer_Symbols.pdb
- 
+Sample/
+Assets/Resources/
+
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
