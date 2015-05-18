@@ -36,7 +36,7 @@ namespace UI
 				BookComponent.ReloadScene ();
 			}
 			
-			if (BookComponent.CurrentBook.Pages.Count > 0) {
+			if (book.Pages.Count > 0) {
 				GUILayout.Label ("Go to page", EditorStyles.boldLabel);
 //				Debug.Log("BookComponent.CurrentBook.CurrentPageIndex = " + BookComponent.CurrentBook.CurrentPageIndex);
 //				Debug.Log(pagesDescriptions.ToArray());
@@ -46,7 +46,58 @@ namespace UI
 				if (index != book.CurrentPageIndex) {
 					BookComponent.ReloadScene ();
 				}
+
+				showMoveUpDownControls ();
 			}
+
+			showColorControls ();
+
+		}
+
+		private void showMoveUpDownControls ()
+		{
+			int oldIndex = book.CurrentPageIndex;
+
+			GUILayout.BeginHorizontal ();
+
+			var moveUpEnabled = oldIndex > 0;
+			GUI.enabled = moveUpEnabled;
+			if (GUILayout.Button ("Move page up")) {
+				var page = book.Pages[oldIndex];
+				book.Pages.RemoveAt(oldIndex);
+				int newIndex = oldIndex - 1;
+				book.Pages.Insert(newIndex, page);
+				book.CurrentPageIndex = newIndex;
+				page.Number = newIndex + 1;
+				book.Pages[oldIndex].Number = oldIndex + 1;
+			}
+
+			var moveDownEnabled = oldIndex < book.Pages.Count - 1;
+			GUI.enabled = moveDownEnabled;
+			if (GUILayout.Button ("Move page down")) {
+				var page = book.Pages[oldIndex];
+				book.Pages.RemoveAt(oldIndex);
+				int newIndex = oldIndex + 1;
+				book.Pages.Insert(newIndex, page);
+				book.CurrentPageIndex = newIndex;
+				page.Number = newIndex + 1;
+				book.Pages[oldIndex].Number = oldIndex + 1;
+			}
+
+			GUI.enabled = true;
+
+			GUILayout.EndHorizontal ();
+		}
+
+		private void showColorControls() {
+			GUILayout.Label ("Color", EditorStyles.boldLabel);
+			
+			var color = book.CurrentPage.Color.ToColor ();
+			var newColor = EditorGUILayout.ColorField (color);
+//			if (color != newColor) {
+			book.CurrentPage.Color = new Helpers.ABColor (newColor);
+				BookComponent.UpdatePageColor ();
+//			}
 		}
 
 		private List<string> bookPagesDescriptionsArray(Book book)

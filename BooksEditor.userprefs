@@ -1,23 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Camera Controllers/AccelerometerCameraController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BookComponent.cs">
     <Files>
-      <File FileName="Assets/Scripts/Helpers/ABPosition.cs" Line="117" Column="33" />
+      <File FileName="Assets/Scripts/BookComponent.cs" Line="31" Column="16" />
+      <File FileName="Assets/Scripts/Helpers/ABPosition.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Book Model/Book.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/UI/Windows/TextWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/BookComponent.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/DeployerScript.cs" Line="45" Column="3" />
+      <File FileName="Assets/Scripts/DeployerScript.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Book Model/Picture.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Camera Controllers/ParallaxEnabler.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Camera Controllers/AccelerometerCameraController.cs" Line="8" Column="38" />
+      <File FileName="Assets/Scripts/Camera Controllers/AccelerometerCameraController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Camera Controllers/CameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/TopPanelDelegate.cs" Line="33" Column="25" />
-      <File FileName="Assets/Scripts/UI/Windows/BookWindow.cs" Line="43" Column="10" />
+      <File FileName="Assets/Scripts/UI/TopPanelDelegate.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UI/Windows/BookWindow.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/UI/Windows/PagesWindow.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/UI/Windows/PicturesWindow.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Book Model/IPositionable.cs" Line="1" Column="1" />
-      <File FileName="Assets/Resources/book.abook.xml" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Camera Controllers/MouseCameraController.cs" Line="9" Column="47" />
+      <File FileName="Assets/Scripts/Camera Controllers/MouseCameraController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Book Model/BookPage.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Book Model/Text.cs" Line="20" Column="63" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -4,6 +4,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using UnityEngine;
+using Helpers;
 
 namespace BookModel
 {
@@ -26,7 +27,7 @@ namespace BookModel
 		public BookPage (int number, string text) : this()
 		{
 			this.Number = number;
-			this.text = new Text(text);
+			this.text = new Text (text);
 		}
 
 		[XmlAttribute("Number")]
@@ -36,8 +37,11 @@ namespace BookModel
 		public Text text { get; set; }
 
 		[XmlArray("Pictures"), XmlArrayItem("Picture")]
-		public List<Picture> Pictures = new List<Picture>();
-		
+		public List<Picture> Pictures = new List<Picture> ();
+
+		[XmlElement("Color")]
+		public ABColor Color = new ABColor (0.2f, 0.3f, 0.6f);
+
 		public override string ToString ()
 		{
 			int textLengthLimit = 10;
@@ -46,25 +50,25 @@ namespace BookModel
 				if (text.Content.Length <= textLengthLimit) {
 					limitedText = text + ". ";
 				} else {
-					limitedText = text.Content.Substring(0, textLengthLimit) + "... ";
+					limitedText = text.Content.Substring (0, textLengthLimit) + "... ";
 				}
 			}
 			return string.Format ("{0}. {1}{2} pictures", Number, limitedText, Pictures.Count);
 		}
 
-		public void OrganizePicturesIntoDirectory(string directory)
+		public void OrganizePicturesIntoDirectory (string directory)
 		{
 			if (Pictures == null || Pictures.Count == 0) {
 				return;
 			}
 
 			for (int pictureNumber = 1; pictureNumber <= Pictures.Count; pictureNumber++) {
-				var picture = Pictures[pictureNumber - 1];
-				var filename = string.Format("page-{0}-picture-{1}.png", Number, pictureNumber);
-				var destinationPath = Path.Combine(directory, filename);
-				Debug.Log("Picture destination: " + destinationPath);
+				var picture = Pictures [pictureNumber - 1];
+				var filename = string.Format ("page-{0}-picture-{1}.png", Number, pictureNumber);
+				var destinationPath = Path.Combine (directory, filename);
+				Debug.Log ("Picture destination: " + destinationPath);
 
-				picture.moveIntoPath(destinationPath);
+				picture.moveIntoPath (destinationPath);
 			}
 		}
 	}

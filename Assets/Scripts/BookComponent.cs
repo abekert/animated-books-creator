@@ -30,7 +30,7 @@ public class BookComponent : MonoBehaviour
 		if (page == null) {
 			Debug.Log("There are no current page");
 		}
-		
+
 		var pictures = page.Pictures;
 		if (pictures == null) {
 			Debug.Log("There are no pictures on current page");
@@ -47,6 +47,17 @@ public class BookComponent : MonoBehaviour
 		}
 		
 		page.text.AddToTheScene ();
+		UpdatePageColor ();
+	}
+
+	public static void UpdatePageColor ()
+	{
+		var page = CurrentBook.CurrentPage;
+		if (page == null) {
+			Debug.Log("There are no current page");
+		}
+
+		Camera.main.backgroundColor = page.Color.ToColor ();
 	}
 
 	public static void ReloadScene ()
