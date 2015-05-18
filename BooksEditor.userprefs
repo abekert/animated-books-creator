@@ -1,11 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BookComponent.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Book Model/Text.cs">
     <Files>
-      <File FileName="Assets/Scripts/BookComponent.cs" Line="31" Column="16" />
+      <File FileName="Assets/Scripts/BookComponent.cs" Line="50" Column="22" />
       <File FileName="Assets/Scripts/Helpers/ABPosition.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Book Model/Book.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/Windows/TextWindow.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UI/Windows/TextWindow.cs" Line="67" Column="31" />
       <File FileName="Assets/Scripts/DeployerScript.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Book Model/Picture.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Camera Controllers/ParallaxEnabler.cs" Line="1" Column="1" />
@@ -13,12 +13,13 @@
       <File FileName="Assets/Scripts/Camera Controllers/CameraController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/UI/TopPanelDelegate.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/UI/Windows/BookWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/Windows/PagesWindow.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UI/Windows/PagesWindow.cs" Line="57" Column="15" />
       <File FileName="Assets/Scripts/UI/Windows/PicturesWindow.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Book Model/IPositionable.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Camera Controllers/MouseCameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Book Model/BookPage.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Book Model/Text.cs" Line="20" Column="63" />
+      <File FileName="Assets/Scripts/Book Model/BookPage.cs" Line="35" Column="3" />
+      <File FileName="Assets/Scripts/Book Model/Text.cs" Line="25" Column="32" />
+      <File FileName="Assets/Scripts/Helpers/ABColor.cs" Line="5" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

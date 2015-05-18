@@ -17,8 +17,8 @@ namespace BookModel
 				content = value;
 				if (textMesh != null) {
 					textMesh.text = content;
-					Object.Destroy(gameObject.GetComponent <BoxCollider> ());
-					gameObject.AddComponent <BoxCollider> ();
+					var size = gameObject.GetComponent<MeshRenderer> ().bounds.size;
+					gameObject.GetComponent <BoxCollider> ().size = size;
 				}
 			}
 			get {
