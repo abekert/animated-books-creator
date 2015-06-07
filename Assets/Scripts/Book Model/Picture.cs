@@ -7,7 +7,7 @@ using Helpers;
 
 namespace BookModel
 {
-	public class Picture : IPositionable
+	public partial class Picture : IPositionable
 	{
 		[XmlElement("Filename")]   
 		public string Filename { set; get; }
@@ -50,6 +50,9 @@ namespace BookModel
 				updatePictureObject();
 			}
 		}
+
+		[XmlElement("Animation")]
+		public ABAnimation Animation;
 
 		[XmlIgnore]
 		string filepath;
