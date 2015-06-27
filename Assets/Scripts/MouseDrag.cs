@@ -17,7 +17,10 @@ public class MouseDrag : MonoBehaviour
 		mouseDownPosition = worldMousePosition ();
 		originalPosition = transform.position;
 
-		PositionableObject.RepositionBegan ();
+		if (PositionableObject != null) {
+			PositionableObject.RepositionBegan ();
+
+		}
 	}
 
 	void OnMouseDrag()

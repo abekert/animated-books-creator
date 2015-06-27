@@ -45,14 +45,16 @@ namespace UI
 			UpdatePicturesList ();
 			if (picturesNames.Count > 0) {
 				GUILayout.Label ("Choose a picture", EditorStyles.boldLabel);
-				showExistingPicturesList();
-				showPositionControls();
-				showRotationControls();
-				showScaleControls();
+				showExistingPicturesList ();
+				showPositionControls ();
+				showRotationControls ();
+				showScaleControls ();
+				showAlphaControls ();
+				showAnimationsControl ();
 			}
 		}
 
-		private void showExistingPicturesList() {
+		private void showExistingPicturesList () {
 			EditorGUILayout.BeginHorizontal ();
 			if (isRenamingCurrentPicture) {
 				picturesNames[CurrentPictureIndex] = GUILayout.TextField(picturesNames[CurrentPictureIndex]);
@@ -73,26 +75,37 @@ namespace UI
 			EditorGUILayout.EndHorizontal ();
 		}
 
-		private void showPositionControls() {
+		private void showPositionControls () {
 			var pos = CurrentPicture.Position.ToVector();
 			pos = EditorGUILayout.Vector3Field ("Position", pos);
 			CurrentPicture.Position = new Helpers.ABPosition(pos);
 		}
 
-		private void showRotationControls() {
+		private void showRotationControls () {
 			CurrentPicture.Rotation = EditorGUILayout.Vector3Field ("Rotation", CurrentPicture.Rotation);
 		}
 
-		private void showScaleControls() {
-			CurrentPicture.ImageScale = EditorGUILayout.Vector2Field ("Scale", CurrentPicture.ImageScale);
+		private void showScaleControls () {
+			CurrentPicture.Scale = EditorGUILayout.Vector2Field ("Scale", CurrentPicture.Scale);
 
 			float scale = 1; 
 			scale = EditorGUILayout.Slider (scale, 0.98f, 1.02f);
-			CurrentPicture.ImageScale *= scale;
+			CurrentPicture.Scale *= scale;
 		}
 
+		private void showAlphaControls () {
+			CurrentPicture.Alpha = EditorGUILayout.Slider ("Alpha", CurrentPicture.Alpha, 0f, 1f);
+		}
 
-		private void addPictureButtonPressed() {
+		private void showAnimationsControl ()
+		{
+			if (GUILayout.Button ("Show Animations")) {
+				var window = ScriptableObject.CreateInstance<AnimationsWindow> ();
+				window.Show ();
+			}
+		}
+
+		private void addPictureButtonPressed () {
 			Debug.Log ("OpenExistingBookButtonPressed");
 			var path = EditorUtility.OpenFilePanel(
 				"Select a picture",
@@ -109,7 +122,7 @@ namespace UI
 					page.Pictures = new List<Picture>();
 				}
 				page.Pictures.Add(picture);
-				picture.AddToTheScene ();
+				picture.AddToScene ();
 
 				// Combo box
 				picturesNames.Add(picture.Name);
@@ -123,7 +136,7 @@ namespace UI
 			if (page.Pictures == null) {
 				throw new IOException("The page doesn't contain any picture to delete");
 			}
-			page.Pictures [CurrentPictureIndex].RemoveFromTheScene ();
+			page.Pictures [CurrentPictureIndex].RemoveFromScene ();
 			page.Pictures.RemoveAt (CurrentPictureIndex);
 			picturesNames.RemoveAt (CurrentPictureIndex);
 			if (CurrentPictureIndex > 0) {
@@ -142,7 +155,6 @@ namespace UI
 				picturesNames.Add(picture.Name);
 			}
 		}
-		
 	}
 }
 

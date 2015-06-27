@@ -23,10 +23,7 @@ namespace UI
 			GUILayout.Label ("The Book", EditorStyles.boldLabel);
 
 			if (GUILayout.Button ("Create new")) {
-				BookComponent.ClearScene ();
-				bookPath = string.Empty;
-				book = Book.TemplateBook();
-				BookComponent.LoadScene ();
+				CreateNewButtonPressed ();
 			}
 
 			if (GUILayout.Button ("Open existing")) {
@@ -39,12 +36,21 @@ namespace UI
 
 			GUILayout.Label ("Attributes", EditorStyles.boldLabel);
 
+			book.FontName = EditorGUILayout.TextField ("Font Name", book.FontName);
 			book.Name = EditorGUILayout.TextField ("Title", book.Name);
 			book.Author = EditorGUILayout.TextField ("Author", book.Author);
 			EditorStyles.textField.wordWrap = true;
 			book.Annotation = EditorGUILayout.TextField ("Annotation", book.Annotation, GUILayout.Height (100), GUILayout.ExpandHeight(true));
 		}
 
+		public void CreateNewButtonPressed ()
+		{
+			BookComponent.ClearScene ();
+			bookPath = string.Empty;
+			book = Book.TemplateBook();
+			BookComponent.LoadScene ();
+		}
+		
 		static private string bookPath;
 		public void OpenExistingBookButtonPressed()
 		{

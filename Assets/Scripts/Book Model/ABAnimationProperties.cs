@@ -5,26 +5,39 @@ using UnityEngine;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Helpers
+namespace BookModel
 {
 	public enum ABAnimationType {
 		None = 0,
 		Group,
 		Sequence,
+		FadeAlphaTo,
+		FadeAlphaBy,
+		FadeIn,
+		FadeOut,
 		MoveTo,
 		MoveBy,
 		RotateTo,
 		RotateBy,
 		ScaleTo,
-		ScaleBy
+		ScaleBy,
+		Wait
+	}
+	
+	public enum ABAnimationTiming {
+		Linear = 0,
+		EaseIn,
+		EaseOut,
+		EaseInEaseOut
 	}
 
-	public class ABAnimationTypeHelper {
-		public static string typeDescription(ABAnimationType type) {
+	internal class ABAnimationTypeHelper
+	{
+		public static string TypeDescription(ABAnimationType type) {
 			return Enum.GetName (typeof(ABAnimationType), type);
 		}
 
-		public static ABAnimationType typeByDescription(string description) {
+		public static ABAnimationType TypeByDescription(string description) {
 			description = description.ToLower ();
 			string[] types = Enum.GetNames (typeof(ABAnimationType));
 			for (int index = 0; index < types.Length; ++index) {
@@ -33,26 +46,52 @@ namespace Helpers
 				}
 			}
 
-			Debug.Log ("No such animation type");
+			Debug.LogError ("No such animation type");
 			return ABAnimationType.None;
 		}
 
-		public static string[] typeDescriptions() {
+		public static string[] TypeDescriptions() {
 			return Enum.GetNames (typeof(ABAnimationType));
 		}
 
-		public static int indexOfAnimation(ABAnimation animation) {
+		public static int IndexOfAnimation(ABAnimation animation) {
 			if (animation == null) {
 				return (int)ABAnimationType.None;
 			}
-			return indexOfAnimationType (animation.Type);
+			return IndexOfAnimationType (animation.Type);
 		}
 
-		public static int indexOfAnimationType(ABAnimationType type) {
+		public static int IndexOfAnimationType(ABAnimationType type) {
 			return (int)type;
 		}
 	}
 
+	internal class ABAnimationTimingHelper {
+		public static string TimingDescription(ABAnimationTiming timing) {
+			return Enum.GetName (typeof(ABAnimationTiming), timing);
+		}
+		
+		public static ABAnimationTiming TimingByDescription(string description) {
+			description = description.ToLower ();
+			string[] timings = Enum.GetNames (typeof(ABAnimationTiming));
+			for (int index = 0; index < timings.Length; ++index) {
+				if (description == timings[index].ToLower ()) {
+					return (ABAnimationTiming)index;
+				}
+			}
+			
+			Debug.LogError ("No such animation timing");
+			return ABAnimationTiming.Linear;
+		}
+		
+		public static string[] TimingDescriptions() {
+			return Enum.GetNames (typeof(ABAnimationTiming));
+		}
+
+		public static int IndexOfAnimationTiming(ABAnimationTiming timing) {
+			return (int)timing;
+		}
+	}
 
 	
 	public partial class ABAnimation
@@ -65,10 +104,10 @@ namespace Helpers
 		[XmlAttribute("type")]
 		public string TypeString {
 			get {
-				return ABAnimationTypeHelper.typeDescription(Type);
+				return ABAnimationTypeHelper.TypeDescription(Type);
 			}
 			set {
-				Type = ABAnimationTypeHelper.typeByDescription(value);
+				Type = ABAnimationTypeHelper.TypeByDescription(value);
 			}
 		}
 		#endregion
@@ -138,6 +177,24 @@ namespace Helpers
 		}
 		#endregion
 
+		#region Single Value
+		[XmlIgnore]
+		public float Value = 0;
+		[XmlAttribute("value")]
+		public string ValueString {
+			get {
+				if (Type != ABAnimationType.FadeAlphaBy &&
+				    Type != ABAnimationType.FadeAlphaTo) {
+					return null;
+				}
+				return Value.ToString ();
+			}
+			set {
+				Value = Convert.ToSingle(value);
+			}
+		}
+		#endregion
+
 		#region Duration
 		private float duration = 0;
 		[XmlIgnore]
@@ -183,7 +240,7 @@ namespace Helpers
 
 		#region Repeat
 		[XmlAttribute("repeat")]
-		public string repeat {
+		public string RepeatString {
 			get {
 				if (RepeatsCount == RepeatForever) {
 					return "forever";
@@ -199,12 +256,33 @@ namespace Helpers
 				} else if (value.ToLower () == "once") {
 					RepeatsCount = 1;
 				} else {
-					RepeatsCount = Convert.ToInt32(RepeatsCount);
+					RepeatsCount = Convert.ToInt32(value);
 				}
 			}
 		}
 		[XmlIgnore]
 		public int RepeatsCount = 1;
+		#endregion
+
+		#region Repeat
+		[XmlAttribute("timing")]
+		public string TimingString {
+			get {
+				if (Timing == ABAnimationTiming.Linear) {
+					return null;
+				}
+				return ABAnimationTimingHelper.TimingDescription (Timing);
+			}
+			set {
+				if (value == null) {
+					Timing = ABAnimationTiming.Linear;
+				} else {
+					Timing = ABAnimationTimingHelper.TimingByDescription (value);
+				}
+			}
+		}
+		[XmlIgnore]
+		public ABAnimationTiming Timing = ABAnimationTiming.Linear;
 		#endregion
 	}
 }

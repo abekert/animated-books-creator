@@ -49,6 +49,7 @@ namespace BookModel
 			book.Name = "The Greatest Book Ever";
 			book.Author = "My Mom";
 			book.Annotation = "The book tells a wonderful story about a book creation process.";
+			book.FontName = "Arial";
 
 			var page = new BookPage (1, "The content" + System.Environment.NewLine + "of first book page");
 			page.Pictures = new List<Picture> ();
@@ -76,6 +77,9 @@ namespace BookModel
 
 		[XmlElement("Annotation")]
 		public string Annotation { get; set; }
+
+		[XmlElement("FontName")]
+		public string FontName { get; set; }
 
 		[XmlArray("Pages"), XmlArrayItem("Page")]
 		public List<BookPage> Pages = new List<BookPage> ();

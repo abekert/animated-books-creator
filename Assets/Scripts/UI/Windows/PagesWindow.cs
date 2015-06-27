@@ -37,24 +37,26 @@ namespace UI
 			}
 			
 			if (book.Pages.Count > 0) {
-				GUILayout.Label ("Go to page", EditorStyles.boldLabel);
-//				Debug.Log("BookComponent.CurrentBook.CurrentPageIndex = " + BookComponent.CurrentBook.CurrentPageIndex);
-//				Debug.Log(pagesDescriptions.ToArray());
-				pagesDescriptions = bookPagesDescriptionsArray (book);
-				var index = book.CurrentPageIndex;
-				book.CurrentPageIndex = EditorGUILayout.Popup (index, pagesDescriptions.ToArray());
-				if (index != book.CurrentPageIndex) {
-					BookComponent.ReloadScene ();
-				}
-
-				showMoveUpDownControls ();
+				showPageSelectionControls ();
+				showMoveUpDownRemoveControls ();
 			}
 
 			showColorControls ();
 
 		}
 
-		private void showMoveUpDownControls ()
+		private void showPageSelectionControls ()
+		{
+			GUILayout.Label ("Go to page", EditorStyles.boldLabel);
+			pagesDescriptions = bookPagesDescriptionsArray (book);
+			var index = book.CurrentPageIndex;
+			book.CurrentPageIndex = EditorGUILayout.Popup (index, pagesDescriptions.ToArray());
+			if (index != book.CurrentPageIndex) {
+				BookComponent.ReloadScene ();
+			}
+		}
+
+		private void showMoveUpDownRemoveControls ()
 		{
 			int oldIndex = book.CurrentPageIndex;
 
@@ -82,6 +84,19 @@ namespace UI
 				book.CurrentPageIndex = newIndex;
 				page.Number = newIndex + 1;
 				book.Pages[oldIndex].Number = oldIndex + 1;
+			}
+
+			var removeEnabled = book.Pages.Count > 1;
+			GUI.enabled = removeEnabled;
+			if (GUILayout.Button ("Remove page")) {
+				book.Pages.RemoveAt (oldIndex);
+				if (oldIndex == book.Pages.Count) {
+					book.CurrentPageIndex = oldIndex - 1;
+				}
+				for (int i = 0; i < book.Pages.Count; i++) {
+					book.Pages [book.CurrentPageIndex + i].Number = book.CurrentPageIndex + i + 1;
+				}
+				BookComponent.ReloadScene ();
 			}
 
 			GUI.enabled = true;

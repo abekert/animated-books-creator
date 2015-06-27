@@ -16,14 +16,14 @@ namespace UI
 				if (page == null) {
 					return null;
 				}
-				return page.text;
+				return page.Text;
 			}
 			set {
 				var page = BookComponent.CurrentBook.CurrentPage;
 				if (page == null) {
 					return;
 				}
-				page.text = value;
+				page.Text = value;
 			}
 		}
 

@@ -26,6 +26,7 @@ namespace UI
 			}
 		}
 
+		private Vector2 scrollPos = new Vector2 ();
 		
 		void OnGUI () {
 			GUILayout.Label ("Animations", EditorStyles.boldLabel);
@@ -34,62 +35,81 @@ namespace UI
 				return;
 			}
 
-			var index = ABAnimationTypeHelper.indexOfAnimation(CurrentPicture.Animation);
-			var newIndex = EditorGUILayout.Popup (index, ABAnimationTypeHelper.typeDescriptions());
+			scrollPos = EditorGUILayout.BeginScrollView (scrollPos);
+
+			var index = ABAnimationTypeHelper.IndexOfAnimation(CurrentPicture.Animation);
+			var newIndex = EditorGUILayout.Popup (index, ABAnimationTypeHelper.TypeDescriptions());
 			if (newIndex != index) {
 				var type = (ABAnimationType)newIndex;
-				Debug.Log(newIndex + " is " + ABAnimationTypeHelper.typeDescription(type));
+				Debug.Log(newIndex + " is " + ABAnimationTypeHelper.TypeDescription(type));
 				CurrentPicture.Animation = new ABAnimation(type);
 			}
 
 			if (CurrentPicture.Animation != null) {
 				foldIndex = 0;
 				EditorGUI.indentLevel = 0;
+
+				showPreviewAnimationButtonIfExists (CurrentPicture.Animation);
 				showAnimationControls (CurrentPicture.Animation);
+			}
+
+			EditorGUILayout.EndScrollView ();
+		}
+
+		void showPreviewAnimationButtonIfExists (ABAnimation animation, string label = "Preview Animation")
+		{
+			if (animation == null || animation.Type == ABAnimationType.None || animation.Type == ABAnimationType.Wait) {
+				return;
+			}
+
+			if (GUILayout.Button(label)) {
+				ABAnimationSystem.PreviewAnimation(animation, CurrentPicture.GameObject);
 			}
 		}
 
 		void showChooseAnimationControls(ABAnimation animation)
 		{
-			var index = ABAnimationTypeHelper.indexOfAnimation(animation);
-			var newIndex = EditorGUILayout.Popup (index, ABAnimationTypeHelper.typeDescriptions());
+			EditorGUILayout.BeginHorizontal ();
+
+			var index = ABAnimationTypeHelper.IndexOfAnimation(animation);
+			var newIndex = EditorGUILayout.Popup (index, ABAnimationTypeHelper.TypeDescriptions());
 			if (newIndex != index) {
 				var type = (ABAnimationType)newIndex;
-				Debug.Log(newIndex + " is " + ABAnimationTypeHelper.typeDescription(type));
+				Debug.Log(newIndex + " is " + ABAnimationTypeHelper.TypeDescription(type));
 				animation.Type = type;
 			}
+
+			showPreviewAnimationButtonIfExists (animation, "Preview");
+
+			EditorGUILayout.EndHorizontal ();
 		}
 
 		void showAnimationControls (ABAnimation animation)
 		{
-			if (GUILayout.Button("Preview animation")) {
-				ABAnimationSystem.PreviewAnimation(animation, CurrentPicture.pictureObject);
-			}
-
 			switch (animation.Type) {
 			case ABAnimationType.MoveBy:
 //				GUILayout.Label ("Move By", EditorStyles.boldLabel);
-				showVectorDurationControls (animation, "Delta vector");
+				showVector3DurationControls (animation, "Delta vector");
 				break;
 			case ABAnimationType.MoveTo:
 //				GUILayout.Label ("Move To", EditorStyles.boldLabel);
-				showVectorDurationControls (animation, "Final position");
+				showVector3DurationControls (animation, "Final position", false);
 				break;
 			case ABAnimationType.RotateBy:
 //				GUILayout.Label ("Rotate By", EditorStyles.boldLabel);
-				showVectorDurationControls (animation, "Delta angle");
+				showVector3DurationControls (animation, "Delta angle");
 				break;
 			case ABAnimationType.RotateTo:
 //				GUILayout.Label ("Rotate To", EditorStyles.boldLabel);
-				showVectorDurationControls (animation, "Final angle");
+				showVector3DurationControls (animation, "Final angle", false);
 				break;
 			case ABAnimationType.ScaleBy:
 //				GUILayout.Label ("Scale By", EditorStyles.boldLabel);
-				showVectorDurationControls (animation, "Delta values");
+				showVector2DurationControls (animation, "Delta values");
 				break;
 			case ABAnimationType.ScaleTo:
 //				GUILayout.Label ("Scale To", EditorStyles.boldLabel);
-				showVectorDurationControls (animation, "Final values");
+				showVector2DurationControls (animation, "Final values", false);
 				break;
 			case ABAnimationType.Group:
 				showGroupControls (animation, "Animation Group");
@@ -97,33 +117,46 @@ namespace UI
 			case ABAnimationType.Sequence:
 				showGroupControls (animation, "Animation Sequence");
 				break;
+			case ABAnimationType.FadeAlphaBy:
+				showValueDurationControls (animation, "Delta Alpha", -1, 1);
+				break;
+			case ABAnimationType.FadeAlphaTo:
+				showValueDurationControls (animation, "Final Alpha", 0, 1, false);
+				break;
+			case ABAnimationType.FadeIn:
+			case ABAnimationType.FadeOut:
+				showDurationTimingControls (animation);
+				break;
+			case ABAnimationType.Wait:
+				animation.Duration = EditorGUILayout.FloatField ("Duration", animation.Duration);
+				break;
 			default:
 				break;
 			}
 		}
 
-		void showVectorDurationControls (ABAnimation animation, string vectorLabel = "Vector", string durationLabel = "Duration")
+		void showVector3DurationControls (ABAnimation animation, string vectorLabel = "Vector", bool showRepeats = true)
 		{
-			animation.Vector = EditorGUILayout.Vector3Field ("Position", animation.Vector);
+			animation.Vector = EditorGUILayout.Vector3Field (vectorLabel, animation.Vector);
 			animation.Duration = EditorGUILayout.FloatField ("Duration", animation.Duration);
-			animation.RepeatsCount = repeatsCountChooser (animation.RepeatsCount);
+			animation.Timing = timingModeChooser (animation.Timing);
+			if (showRepeats) {
+				animation.RepeatsCount = repeatsCountChooser (animation.RepeatsCount);
+			}
 		}
 
-		void showRotateControls (ABAnimation animation)
+		void showVector2DurationControls (ABAnimation animation, string vectorLabel = "Vector", bool showRepeats = true)
 		{
-			animation.Vector = EditorGUILayout.Vector3Field ("Angles", animation.Vector);
+			animation.Vector = EditorGUILayout.Vector2Field (vectorLabel, animation.Vector);
 			animation.Duration = EditorGUILayout.FloatField ("Duration", animation.Duration);
-			animation.RepeatsCount = repeatsCountChooser (animation.RepeatsCount);
+			animation.Timing = timingModeChooser (animation.Timing);
+			if (showRepeats) {
+				animation.RepeatsCount = repeatsCountChooser (animation.RepeatsCount);
+			}
 		}
 
-		void showScaleControls (ABAnimation animation)
-		{
-			animation.Vector = EditorGUILayout.Vector3Field ("Scale", animation.Vector);
-			animation.Duration = EditorGUILayout.FloatField ("Duration", animation.Duration);
-			animation.RepeatsCount = repeatsCountChooser (animation.RepeatsCount);
-		}
 
-		private int repeatsCountChooser(int currentRepeatsCount)
+		private int repeatsCountChooser (int currentRepeatsCount)
 		{
 			string[] repeatDescription = {"Once", "Forever", "Count"};
 			int index = 0;
@@ -145,6 +178,13 @@ namespace UI
 			}
 		}
 
+		private ABAnimationTiming timingModeChooser (ABAnimationTiming currentTiming)
+		{
+			int index = (int)currentTiming;
+			index = EditorGUILayout.Popup ("Timing Mode", index, ABAnimationTimingHelper.TimingDescriptions ());
+			return (ABAnimationTiming)index;
+		}
+
 		private List<bool> foldsEnablers = new List<bool> ();
 		private int foldIndex = 0;
 		void showGroupControls (ABAnimation animation, string foldLabel = "Animations")
@@ -155,42 +195,80 @@ namespace UI
 			}
 
 			if (foldIndex == foldsEnablers.Count) {
-				foldsEnablers.Add(true);
+				foldsEnablers.Add (true);
 			}
 
-			foldsEnablers[foldIndex] = EditorGUILayout.Foldout (foldsEnablers[foldIndex], foldLabel);
-			if (foldsEnablers[foldIndex]) {
-				EditorGUI.indentLevel++;
+			EditorGUILayout.BeginHorizontal ();
 
-				var count = animation.Animations.Count;
-				EditorGUILayout.BeginHorizontal ();
+			foldsEnablers [foldIndex] = EditorGUILayout.Foldout (foldsEnablers[foldIndex], foldLabel);
+
+			// Show Add & Remove buttons
+			var count = animation.Animations.Count;
+			if (foldsEnablers [foldIndex]) {
 				if (GUILayout.Button ("Add")) {
-					animation.Animations.Add (new ABAnimation(ABAnimationType.None));
+					animation.Animations.Add (new ABAnimation (ABAnimationType.None));
 					count++;
 				}
 				GUI.enabled = count > 1;
 				if (GUILayout.Button ("Remove")) {
-					animation.Animations.RemoveAt(count - 1);
+					animation.Animations.RemoveAt (count - 1);
 					count--;
 				}
 				GUI.enabled = true;
-				EditorGUILayout.EndHorizontal ();
+			}
+
+			EditorGUILayout.EndHorizontal ();
+
+			// Show Animation controls
+			if (foldsEnablers [foldIndex]) {
+				foldIndex++;
+				EditorGUI.indentLevel++;
 
 				animation.RepeatsCount = repeatsCountChooser (animation.RepeatsCount);
 
-				foldIndex++;
 				for (int index = 0; index < count; ++index) {
 					EditorGUILayout.LabelField ("Animation " + (index + 1));
-					var item = animation.Animations[index];
+					var item = animation.Animations [index];
 					showChooseAnimationControls (item);
 					showAnimationControls (item);
+					EditorGUILayout.Separator ();
 				}
 
 				EditorGUI.indentLevel--;
+				EditorGUILayout.Separator ();
+			} else {
+				foldIndex += 1 + foldableAnimationsCount (animation);
 			}
 		}
 
-		
+		private int foldableAnimationsCount (ABAnimation animation)
+		{
+			int count = 0;
+			foreach (var item in animation.Animations) {
+				if (item.Type == ABAnimationType.Group ||
+				    item.Type == ABAnimationType.Sequence) {
+					count += 1 + foldableAnimationsCount (item);
+				}
+			}
+			return count;
+		}
+
+		private void showValueDurationControls (ABAnimation animation, string vectorLabel = "Value", float low = 0, float high = 1, bool showRepeats = true)
+		{
+			animation.Value = EditorGUILayout.Slider (vectorLabel, animation.Value, low, high);
+			animation.Duration = EditorGUILayout.FloatField ("Duration", animation.Duration);
+			animation.Timing = timingModeChooser (animation.Timing);
+			if (showRepeats) {
+				animation.RepeatsCount = repeatsCountChooser (animation.RepeatsCount);
+			}
+		}
+
+		private void showDurationTimingControls (ABAnimation animation) 
+		{
+			animation.Duration = EditorGUILayout.FloatField ("Duration", animation.Duration);
+			animation.Timing = timingModeChooser (animation.Timing);
+		}
+
 	}
 }
 

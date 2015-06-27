@@ -27,14 +27,14 @@ namespace BookModel
 		public BookPage (int number, string text) : this()
 		{
 			this.Number = number;
-			this.text = new Text (text);
+			this.Text = new Text (text);
 		}
 
 		[XmlAttribute("Number")]
 		public int Number { get; set; }
 		
 		[XmlElement("Text")]   
-		public Text text { get; set; }
+		public Text Text { get; set; }
 
 		[XmlArray("Pictures"), XmlArrayItem("Picture")]
 		public List<Picture> Pictures = new List<Picture> ();
@@ -44,13 +44,13 @@ namespace BookModel
 
 		public override string ToString ()
 		{
-			int textLengthLimit = 10;
+			int textLengthLimit = 30;
 			string limitedText = "";
-			if (text != null && text.Content != string.Empty) {
-				if (text.Content.Length <= textLengthLimit) {
-					limitedText = text + ". ";
+			if (Text != null && Text.Content != string.Empty) {
+				if (Text.Content.Length <= textLengthLimit) {
+					limitedText = Text + ". ";
 				} else {
-					limitedText = text.Content.Substring (0, textLengthLimit) + "... ";
+					limitedText = Text.Content.Substring (0, textLengthLimit) + "... ";
 				}
 			}
 			return string.Format ("{0}. {1}{2} pictures", Number, limitedText, Pictures.Count);
@@ -68,7 +68,14 @@ namespace BookModel
 				var destinationPath = Path.Combine (directory, filename);
 				Debug.Log ("Picture destination: " + destinationPath);
 
-				picture.moveIntoPath (destinationPath);
+				picture.MoveIntoPath (destinationPath);
+			}
+		}
+
+		public void ClearPicturesIfNeeded ()
+		{
+			foreach (var item in Pictures) {
+				item.RemoveFromDiscIfInBookDirectory ();
 			}
 		}
 	}

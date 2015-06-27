@@ -34,6 +34,12 @@ public class CameraController : MonoBehaviour {
 	protected void Update ()
 	{
 		position = InitialPosition + new Vector3 (FreedomX * ShiftX, FreedomY * ShiftY, 0);
-		transform.LookAt (new Vector3 (0, 0, 100));
+		transform.LookAt (lookPoint ());
+	}
+
+	private Vector3 lookPoint ()
+	{
+//		return new Vector3 (0, 0, 100);
+		return new Vector3 (-position.x * 0.5f, -position.y * 0.5f, -position.z);
 	}
 }

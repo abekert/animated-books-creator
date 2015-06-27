@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,8 +7,12 @@ using BookModel;
 
 public class BookComponent : MonoBehaviour
 {
-
 	public static Book CurrentBook = Book.TemplateBook ();
+	public static bool IsPlayerMode {
+		get {
+			return CurrentBook.IsFromResourcesFolder;
+		}
+	}
 
 	public static GameObject BookObject {
 		get {
@@ -38,15 +43,15 @@ public class BookComponent : MonoBehaviour
 		}
 		
 		foreach (var picture in pictures) {
-			picture.AddToTheScene ();
+			picture.AddToScene (!IsPlayerMode);
 		}
 		
-		if (page.text == null) {
+		if (page.Text == null) {
 			Debug.Log("The text field is empty for current page");
-			page.text = new Text ("");
+			page.Text = new Text ("");
 		}
 		
-		page.text.AddToTheScene ();
+		page.Text.AddToTheScene (!IsPlayerMode, CurrentBook.FontName);
 		UpdatePageColor ();
 	}
 
@@ -77,10 +82,6 @@ public class BookComponent : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		CurrentBook.CurrentPage.text.AddToTheScene ();
-//		var text = new Text ("Hello - hello!");
-//		text.Position = new Helpers.Position (0.5f, 0.5f, -9);
-//		text.AddToTheScene ();
 	}
 	
 	// Update is called once per frame
@@ -88,4 +89,45 @@ public class BookComponent : MonoBehaviour
 	{
 	
 	}
+
+	public static bool GoToNextPage (bool animated, Action completion = null)
+	{
+		if (CurrentBook.CurrentPageIndex == CurrentBook.Pages.Count - 1) {
+			return false;
+		}
+
+		if (animated) {
+			var nextPage = CurrentBook.Pages [CurrentBook.CurrentPageIndex + 1];
+			Helpers.PageTransitions.FontName = CurrentBook.FontName;
+			Helpers.PageTransitions.ShowNextPage (CurrentBook.CurrentPage, nextPage, IsPlayerMode, completion);
+			CurrentBook.CurrentPageIndex++;
+		} else {
+			CurrentBook.CurrentPageIndex++;
+			ReloadScene ();
+			completion ();
+		}
+
+		return true;
+	}
+	
+	public static bool GoToPreviousPage (bool animated, Action completion = null)
+	{
+		if (CurrentBook.CurrentPageIndex == 0) {
+			return false;
+		}
+		
+		if (animated) {
+			var previousPage = CurrentBook.Pages [CurrentBook.CurrentPageIndex - 1];
+			Helpers.PageTransitions.FontName = CurrentBook.FontName;
+			Helpers.PageTransitions.ShowPreviousPage (CurrentBook.CurrentPage, previousPage, IsPlayerMode, completion);
+			CurrentBook.CurrentPageIndex--;
+		} else {
+			CurrentBook.CurrentPageIndex--;
+			ReloadScene ();
+			completion ();
+		}
+
+		return true;
+	}
+
 }

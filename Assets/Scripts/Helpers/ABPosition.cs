@@ -99,7 +99,7 @@ namespace Helpers
 		public Vector3 OnScreenPosition()
 		{
 			var screen = screenSize ();
-			Debug.Log (string.Format ("Screen size Width = {0}, Height = {1}", screen.x, screen.y));
+//			Debug.Log (string.Format ("Screen size Width = {0}, Height = {1}", screen.x, screen.y));
 			float aspect = screen.x / screen.y;
 			float screenX = (x - 0.5f) * 100 * aspect;
 			float screenY = (y - 0.5f) * 100f;

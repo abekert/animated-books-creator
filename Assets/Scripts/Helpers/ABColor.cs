@@ -1,12 +1,18 @@
 using UnityEngine;
+using System.Xml.Serialization;
 
 namespace Helpers
 {
 	public class ABColor
 	{
-		public float Red;
-		public float Green;
-		public float Blue;
+		[XmlAttribute ("red")]
+		public float Red = 0;
+
+		[XmlAttribute ("green")]
+		public float Green = 0;
+
+		[XmlAttribute ("blue")]
+		public float Blue = 0;
 
 		public Color ToColor() {
 			return new Color (Red, Green, Blue);

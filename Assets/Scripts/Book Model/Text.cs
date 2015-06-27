@@ -17,8 +17,8 @@ namespace BookModel
 				content = value;
 				if (textMesh != null) {
 					textMesh.text = content;
-					var size = gameObject.GetComponent<MeshRenderer> ().bounds.size;
-					gameObject.GetComponent <BoxCollider> ().size = size;
+					var size = GameObject.GetComponent<MeshRenderer> ().bounds.size;
+					GameObject.GetComponent <BoxCollider> ().size = size;
 				}
 			}
 			get {
@@ -102,17 +102,17 @@ namespace BookModel
 		}
 
 		[XmlIgnore]
-		public GameObject gameObject;
+		public GameObject GameObject;
 		private TextMesh textMesh;
 		
 		private void updateGameObject ()
 		{
-			if (gameObject == null) {
+			if (GameObject == null) {
 				return;
 			}
-			gameObject.transform.position = position.OnScreenPosition ();
-			gameObject.transform.eulerAngles = rotation;
-			gameObject.transform.localScale = scale;
+			GameObject.transform.position = position.OnScreenPosition ();
+			GameObject.transform.eulerAngles = rotation;
+			GameObject.transform.localScale = scale;
 
 			textMesh.color = color.ToColor ();
 			textMesh.alignment = textAlignment;
@@ -120,7 +120,7 @@ namespace BookModel
 		
 		public void UpdatePositionByObject ()
 		{
-			position.convertFromOnScreenPosition (gameObject.transform.position);
+			position.convertFromOnScreenPosition (GameObject.transform.position);
 		}
 		
 		public Text ()
@@ -132,23 +132,26 @@ namespace BookModel
 			this.Content = content;
 		}
 		
-		public void AddToTheScene ()
+		public void AddToTheScene (bool isDraggable = true, string fontname = "Arial")
 		{
-			gameObject = new GameObject ("Text Object");
-			textMesh = gameObject.AddComponent<TextMesh> ();
+			GameObject = new GameObject ("Text Object");
+			textMesh = GameObject.AddComponent<TextMesh> ();
 
-			gameObject.GetComponent<MeshRenderer> ().material = Resources.Load<Material> ("Arial");
-			var myFont = Resources.Load<Font> ("Arial");
+			GameObject.GetComponent<MeshRenderer> ().material = Resources.Load<Material> (fontname);
+			var myFont = Resources.Load<Font> (fontname);
 			textMesh.font = myFont;
 			textMesh.text = Content;
 			textMesh.fontSize = 72;
 			textMesh.alignment = UnityEngine.TextAlignment.Center;
 			textMesh.anchor = TextAnchor.MiddleCenter;
 
-			gameObject.transform.SetParent (BookComponent.BookObject.transform);
-			gameObject.AddComponent<BoxCollider> ();
-			var mouseDrag = gameObject.AddComponent<MouseDrag> ();
-			mouseDrag.PositionableObject = this;
+			GameObject.transform.SetParent (BookComponent.BookObject.transform);
+
+			if (isDraggable) {
+				GameObject.AddComponent<BoxCollider> ();
+				var mouseDrag = GameObject.AddComponent<MouseDrag> ();
+				mouseDrag.PositionableObject = this;
+			}
 
 			// Set object's variables
 			updateGameObject ();
@@ -156,8 +159,8 @@ namespace BookModel
 		
 		public void RemoveFromTheScene ()
 		{
-			GameObject.Destroy (gameObject);
-			gameObject = null;
+			GameObject.Destroy (GameObject);
+			GameObject = null;
 		}
 
 		public void RepositionBegan ()

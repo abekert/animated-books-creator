@@ -23,7 +23,7 @@ namespace BookModel
 			}
 			set {
 				position = value;
-				updatePictureObject();
+				UpdateGameObject();
 			}
 		}
 
@@ -35,38 +35,56 @@ namespace BookModel
 			}
 			set {
 				rotation = value;
-				updatePictureObject();
+				UpdateGameObject();
 			}
 		}
 
-		private Vector2 imageScale = new Vector2(1, 1);
+		private Vector2 scale = new Vector2(1, 1);
 		[XmlElement("Scale")]
-		public Vector2 ImageScale {
+		public Vector2 Scale {
 			get {
-				return imageScale;
+				return scale;
 			}
 			set {
-				imageScale = value;
-				updatePictureObject();
+				scale = value;
+				UpdateGameObject();
 			}
 		}
 
+		private float alpha = 1;
+		[XmlElement("Alpha")]
+		public float Alpha {
+			get {
+				return alpha;
+			}
+			set {
+				alpha = Mathf.Max (Mathf.Min (1, value), 0);
+				UpdateGameObject();
+			}
+		}
+
+		
 		[XmlElement("Animation")]
 		public ABAnimation Animation;
 
 		[XmlIgnore]
 		string filepath;
 		[XmlIgnore]
-		public GameObject pictureObject;
+		public GameObject GameObject;
 
-		private void updatePictureObject()
+		public void UpdateGameObject ()
 		{
-			if (pictureObject == null) {
+			if (GameObject == null) {
 				return;
 			}
-			pictureObject.transform.position = position.OnScreenPosition();
-			pictureObject.transform.eulerAngles = rotation;
-			pictureObject.transform.localScale = imageScale;
+			GameObject.transform.position = position.OnScreenPosition();
+			GameObject.transform.eulerAngles = rotation;
+			GameObject.transform.localScale = scale;
+
+			var renderer = GameObject.GetComponent<SpriteRenderer> ();
+			var color = renderer.color;
+			color.a = alpha;
+			renderer.color = color;
 		}
 
 		public Picture()
@@ -84,9 +102,13 @@ namespace BookModel
 			Name = name;
 		}
 
-		public bool moveIntoPath(string destinationPath)
+		public bool MoveIntoPath(string destinationPath)
 		{
 			Filename = Path.GetFileName(destinationPath);
+
+			if (filepath == null) {
+				filepath = Path.Combine(BookComponent.CurrentBook.WorkingDirectory, Filename);
+			}
 
 			if (destinationPath == filepath) {
 				return true;
@@ -128,27 +150,47 @@ namespace BookModel
 			return texture;
 		}
 
-		public void AddToTheScene()
+		public void AddToScene(bool isDraggable = true)
 		{
 			var texture = loadTexture ();
 			var sprite = Sprite.Create(texture,new Rect(0,0,texture.width,texture.height),new Vector2(0.5f,0.5f));
 
 			// Add to the scene
-			pictureObject = new GameObject("Picture Object");
-			var renderer = pictureObject.AddComponent<SpriteRenderer>();
+			GameObject = new GameObject("Picture Object");
+			var renderer = GameObject.AddComponent<SpriteRenderer>();
 			renderer.sprite = sprite;
-			var mouseDrag = pictureObject.AddComponent<MouseDrag>();
-			mouseDrag.PositionableObject = this;
-			pictureObject.AddComponent<BoxCollider> ();
-			pictureObject.transform.SetParent (BookComponent.BookObject.transform);
+			GameObject.transform.SetParent (BookComponent.BookObject.transform);
+
+			if (isDraggable) {
+				var mouseDrag = GameObject.AddComponent<MouseDrag>();
+				mouseDrag.PositionableObject = this;
+				GameObject.AddComponent<BoxCollider> ();
+			}
 
 			// Set object's variables
-			updatePictureObject ();
+			UpdateGameObject ();
 		}
 
-		public void RemoveFromTheScene() {
-			GameObject.Destroy (pictureObject);
-			pictureObject = null;
+		public void RemoveFromScene() {
+			GameObject.Destroy (GameObject);
+			GameObject = null;
+		}
+
+		public void RemoveFromDiscIfInBookDirectory ()
+		{
+			var bookDirectory = BookComponent.CurrentBook.WorkingDirectory;
+			if (filepath == null) {
+				filepath = Path.Combine(bookDirectory, Filename);
+				if (!File.Exists (filepath)) {
+					File.Delete (filepath);
+				}
+				return;
+			}
+
+			var fileDirectory = Path.GetDirectoryName (filepath);
+			if (fileDirectory == bookDirectory) {
+				File.Delete (filepath);
+			}
 		}
 
 		public void RepositionBegan () {

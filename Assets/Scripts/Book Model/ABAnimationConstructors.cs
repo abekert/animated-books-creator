@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Helpers
+namespace BookModel
 {
 	public partial class ABAnimation
 	{
@@ -67,7 +67,44 @@ namespace Helpers
 			animation.Duration = duration;
 			return animation;
 		}
-		
+
+		public static ABAnimation WaitForDuration (float duration)
+		{
+			var animation = new ABAnimation(ABAnimationType.Wait);
+			animation.Duration = duration;
+			return animation;
+		}
+
+		public static ABAnimation FadeAlphaTo (float alpha, float duration)
+		{
+			var animation = new ABAnimation(ABAnimationType.FadeAlphaTo);
+			animation.Value = alpha;
+			animation.Duration = duration;
+			return animation;
+		}
+
+		public static ABAnimation FadeAlphaBy (float deltaAlpha, float duration)
+		{
+			var animation = new ABAnimation(ABAnimationType.FadeAlphaBy);
+			animation.Value = deltaAlpha;
+			animation.Duration = duration;
+			return animation;
+		}
+
+		public static ABAnimation FadeIn (float duration)
+		{
+			var animation = new ABAnimation(ABAnimationType.FadeIn);
+			animation.Duration = duration;
+			return animation;
+		}
+
+		public static ABAnimation FadeOut (float duration)
+		{
+			var animation = new ABAnimation(ABAnimationType.FadeOut);
+			animation.Duration = duration;
+			return animation;
+		}
+
 		public ABAnimation (ABAnimationType type)
 		{
 			this.Type = type;
@@ -80,6 +117,7 @@ namespace Helpers
 			Vector = animation.Vector;
 			Duration = animation.duration;
 			RepeatsCount = animation.RepeatsCount;
+			Value = animation.Value;
 		}
 
 		public ABAnimation()
