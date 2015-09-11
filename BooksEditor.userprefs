@@ -1,59 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/DeployerScript.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../Kick Around/Assets/Scripts/Enemy.cs">
     <Files>
-      <File FileName="Assets/Scripts/Camera Controllers/MenuCamera.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/DeployerScript.cs" Line="28" Column="14" />
-      <File FileName="Assets/Scripts/Camera Controllers/ParallaxEnabler.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Camera Controllers/AccelerometerCameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Camera Controllers/CameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/Windows/BookWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/Windows/PagesWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/Windows/PicturesWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Book Model/IPositionable.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Camera Controllers/MouseCameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Book Model/BookPage.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Book Model/Text.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Helpers/ABColor.cs" Line="1" Column="1" />
-      <File FileName="Assets/LeanTween/ReadMe.txt" Line="1" Column="1" />
-      <File FileName="Assets/LeanTween/Editor/LeanTweenDocumentationEditor.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/Windows/AnimationsWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/TopPanelDelegate.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/LeanTween/LeanTween.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Helpers/PageTransitions.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MouseDrag.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UI/Windows/SoundWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Resources/Ганс Кристиан Андерсен — Принцесса на горошине.abook.xml" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Book Model/ABAnimationConstructors.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Book Model/ABAnimationProperties.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Helpers/ABTextAlignment.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Book Model/Book.cs" Line="1" Column="1" />
+      <File FileName="../Kick Around/Assets/Scripts/Enemy.cs" Line="35" Column="3" />
+      <File FileName="../Kick Around/Assets/Scripts/Move.cs" Line="16" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-CSharp" expanded="True">
-            <Node name="Scripts" expanded="True">
-              <Node name="Book Model" expanded="True" />
-              <Node name="DeployerScript.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State expanded="True" selected="True" />
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>this.filepath</Value>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
-    <Watch file="Assets/Scripts/UI/Windows/SoundWindow.cs" line="74" offsetX="760" offsetY="1095" expression="AudioDataLoadState.Loaded" liveUpdate="False" />
-  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
